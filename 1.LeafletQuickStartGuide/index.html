@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaflet Quick Start Guide</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+
+</head>
+
+<body>
+    <h1 style="background-color: aquamarine; padding: 20px;">Setting up a Leaflet map, working with markers, polyLines
+        and popups, and
+        dealing with events.</h1>
+    <div id="mapId" style="height: 580px; border: 1px solid black;"></div>
+    <script>
+        // Let’s create a map of the center of London with pretty MapBox Streets tiles.
+        // First we’ll initialize the map and set its view to our chosen geographical
+        // coordinates and a zoom level:
+        var myMap = L
+            .map('mapId')
+            .setView([
+                51.505, -0.09
+            ], 13);
+
+        // Markers
+        var marker = L
+            .marker([51.5, -0.09])
+            .addTo(myMap);
+
+        // Circles
+        var circle = L.circle([
+            51.508, -0.11
+        ], {
+            color: 'red',
+            fillColor: '#f03',
+            fillOpacity: 0.5,
+            radius: 900
+        }).addTo(myMap);
+
+        //Polygon
+        var polygon = L.polygon([
+            [
+                51.509, -0.08
+            ],
+            [
+                51.503, -0.06
+            ],
+            [51.51, -0.047]
+        ]).addTo(myMap);
+
+        // Popups as Layers
+        var popup = L
+            .popup()
+            .setLatLng([51.5, -0.09])
+            .setContent("I am a standalone popup.")
+            .openOn(myMap);
+
+        //Tile Layers
+        L
+            .tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToke' +
+                'n}', {
+                    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contr' +
+                        'ibutors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>,' +
+                        ' Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                    maxZoom: 18,
+                    id: 'mapbox/streets-v11',
+                    tileSize: 512,
+                    zoomOffset: -1,
+                    accessToken: 'pk.eyJ1Ijoic2hhc2htYXAiLCJhIjoiY2tnem5zM3ZyMHRmdDJ1cGR5eWY4eGFvNCJ9.rDKwxxiM_EZ_' +
+                        'E_3_TDTB_A'
+                })
+            .addTo(myMap);
+
+        // Popups
+
+        marker
+            .bindPopup("<b>Hello world!</b><br>I am a popup.")
+            .openPopup();
+        circle.bindPopup("I am a circle.");
+        polygon.bindPopup("I am a polygon.");
+
+        //Events
+
+        var popup = L.popup();
+
+        function onMapClick(e) {
+            popup
+                .setLatLng(e.latlng)
+                .setContent("You clicked the map at " + e.latlng.toString())
+                .openOn(myMap);
+        }
+
+        myMap.on('click', onMapClick);
+    </script>
+</body>
+
+</html>
