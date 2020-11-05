@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Leaflet Quick Start Guide</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        html,
+        body,
+        #map {
+            height: 100%;
+            width: 100vw;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 style="background-color: aquamarine; padding: 20px">Leaflet On Mobile</h1>
+    <div id="map"></div>
+    <script>
+        // Initialize the map 
+        var map = L.map('map').fitWorld();
+
+        //Tile Layers
+        L.tileLayer(
+            "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToke" +
+            "n}", {
+                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contr' +
+                    'ibutors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>,' +
+                    ' Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                maxZoom: 18,
+                id: "mapbox/streets-v11", // id: "mapbox/satellite-v9"
+                tileSize: 512,
+                zoomOffset: -1,
+                accessToken: "pk.eyJ1Ijoic2hhc2htYXAiLCJhIjoiY2tnem5zM3ZyMHRmdDJ1cGR5eWY4eGFvNCJ9.rDKwxxiM_EZ_E_3_TDTB_A"
+            }
+        ).addTo(map);
+
+        map.locate({
+            setView: true,
+            maxZoom: 16
+        });
+
+        function onLocationFound(e) {
+            var radius = e.accuracy;
+
+            L.marker(e.latlng).addTo(map)
+                .bindPopup("You are within " + radius + " meters from this point").openPopup();
+
+            L.circle(e.latlng, radius).addTo(map);
+        }
+
+        map.on('locationFound', onLocationFound);
+
+        function onLocationError(e) {
+            alert(e.message);
+        }
+
+        map.on('locationError', onLocationError);
+    </script>
+</body>
+
+</html>
