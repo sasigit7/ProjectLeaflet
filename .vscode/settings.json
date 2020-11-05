@@ -1,5 +1,6 @@
 {
     "cSpell.ignoreWords": [
         "mapbox"
-    ]
+    ],
+    "liveServer.settings.port": 5501
 }
